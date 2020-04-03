@@ -1,2 +1,2 @@
 # CompDTUPaperCode
-Code and Instructions to Reproduce Results from CompDTU Paper
+This repository contains code to reproduce results from the CompDTU paper.  See the file "Instructions to Reproduce Analyses.rtf"
