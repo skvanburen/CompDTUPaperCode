@@ -1,4 +1,4 @@
-# CompDTUPaperCode
+CompDTUPaperCode
 This repository contains code to reproduce results from the CompDTU paper.  
 
 Last updated April 6, 2020
@@ -190,3 +190,6 @@ done
 
 
 22. The computation time table results can be reproduced with the scripts contained within the ComputationTimeTable subdirectory.  Lastly, power table results are produced using the file “PowerTableCodeMar2020.R”.
+=======
+This repository contains code to reproduce results from "Differential Transcript Usage Analysis Incorporating Quantification Uncertainty via Compositional Measurement Error Regression Modeling."  See the file "Instructions to Reproduce Analyses.rtf" for more information.
+>>>>>>> b17a6cbd108eec33ecf61d30ae660a04eb720345
