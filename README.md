@@ -178,14 +178,14 @@ Now, instructions to reproduce the simulation power analysis.  The original vers
 
 21. Once the file above has completed, run the file RSimulationCode.sh (which in turn calls RSimulationCode.R) within the directory.   This needs to be submitted as an array job, where each simulation setup is split up into parts to enable the code to run in parallel across different jobs.  Each job is currently split up such that each “part” runs 1000 simulation runs, and each setup is currently run 10 times to give 10,000 total runs per setup.  Thus, each simulation scenario has 10 parts of results.  For example array values 1-10 correspond to simulation scenario 1 parts 1-10, values 101-110 correspond to scenario 2 parts 1-10, 201-210 correspond to scenario 3 parts 1-10, etc.  Thus values ending on 11-99 are not currently used and would be reserved to submit more parts for given scenarios.  The total number of simulation scenarios in the RSimVals.RData file is currently 714, which would require array value numbers greater than the maximum of about 40000 to be submitted.  To fix this, change the option RunAdditionalNSamps to TRUE and submit using array values corresponding to simulations 1-357 such that now values 1-10 correspond to simulation scenario 358 parts 1-10, values 101-110 correspond to scenario 359 parts 1-10, 201-210 correspond to scenario 360 parts 1-10, etc.  To submit these jobs to the cluster use code like the following, making sure to modify options such as RunAdditionalNSamps and and CalculateImputePermutePvals as necessary. 
 
-cd ~/res/GEUV1Data/RSimulationCode
-module load r/3.6.0
-for i in `seq 1 357`;
-do
-let k=(100*($i-1))+1
-let l=(100*($i-1))+10
-sbatch --array=$k-$l RSimulationCode.sh
-done
+cd ~/res/GEUV1Data/RSimulationCode<br/>
+module load r/3.6.0<br/>
+for i in `seq 1 357`;<br/>
+do<br/>
+let k=(100*($i-1))+1<br/> 
+let l=(100*($i-1))+10<br/>  
+sbatch --array=$k-$l RSimulationCode.sh<br/> 
+done<br/>
 
 
 22. The computation time table results can be reproduced with the scripts contained within the ComputationTimeTable subdirectory.  Lastly, power table results are produced using the file “PowerTableCodeMar2020.R”.
