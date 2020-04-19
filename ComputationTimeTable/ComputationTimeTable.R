@@ -10,11 +10,16 @@ save_dir <- "/Users/Scott/Documents/Dissertation/Paper1/Tables"
 setwd(def_wd)
 
 
-tab_func <- function(fil1, fil2, fil3 = NULL, fil4 = NULL, fil5 = NULL){
+tab_func <- function(fil1, fil2, fil3 = NULL, fil4 = NULL, fil5 = NULL, IncludeHardcodedBANDITSRes462Samples = FALSE){
   if(is.null(fil3) & is.null(fil4)){
     da <- data.frame(Method = c("CompDTU", "DRIMSeq"), stringsAsFactors = FALSE)
   }else if(is.null(fil4)){
-    da <- data.frame(Method = c("CompDTU", "CompDTUme", "DRIMSeq"), stringsAsFactors = FALSE)
+    if(IncludeHardcodedBANDITSRes462Samples==TRUE){
+      da <- data.frame(Method = c("CompDTU", "CompDTUme", "DRIMSeq", "BANDITS"), stringsAsFactors = FALSE)
+    }else{
+      da <- data.frame(Method = c("CompDTU", "CompDTUme", "DRIMSeq"), stringsAsFactors = FALSE)
+    }
+
   }else{
     da <- data.frame(Method = c("CompDTU", "CompDTUme", "DRIMSeq", "RATsNoBoot", "RATsBoot", "BANDITS"), stringsAsFactors = FALSE)
   }
@@ -75,6 +80,16 @@ tab_func <- function(fil1, fil2, fil3 = NULL, fil4 = NULL, fil5 = NULL){
   da["CompDTUme", "Run Time Per Gene (s)"] <- mean(CompModelingObsPvals$comptgene)
 
 
+  if(IncludeHardcodedBANDITSRes462Samples==TRUE){
+    numg <- 7522
+    da["BANDITS", "$G$"] <- NA
+    
+    #Include the calculation of the precision factor in the compuation time as well as the time to run the test_DTU call because the precision 
+    #step comes "highly recommended" by the vignette
+    BANDITSTotalTime <- 302400
+    da["BANDITS", "Run Time (s)"] <- BANDITSTotalTime
+    da["BANDITS", "Run Time Per Gene (s)"] <- BANDITSTotalTime/numg
+  }
 
   #fil4 will be used for RATs if it is added
   if(is.null(fil4)){
@@ -185,7 +200,7 @@ fil_dir <- "/Users/Scott/Documents/Dissertation/Paper1/Tables/ComputationTimeTab
 fil1 <- paste0(fil_dir, "CompositionalResSplitDRIMSeqFiltering.RData")
 fil2 <- paste0(fil_dir, "DRIMSeqResDRIMSeqFiltering.RData")
 fil3 <- paste0(fil_dir, "CompositionalModelingResSplitDRIMSeqFiltering.RData")
-ObsAnalysisTableGEUV1DRIMSeqFiltering <- tab_func(fil1 = fil1, fil2 = fil2, fil3 = fil3)
+ObsAnalysisTableGEUV1DRIMSeqFiltering <- tab_func(fil1 = fil1, fil2 = fil2, fil3 = fil3, IncludeHardcodedBANDITSRes462Samples = TRUE)
 
 save(ObsAnalysisTableGEUV1DRIMSeqFiltering, file = paste0(save_dir, "/", "Paper1CompTimeTableGEUV1DRIMSeqFiltering.RData"))
 
