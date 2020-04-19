@@ -184,7 +184,7 @@ Now, instructions to reproduce the simulation power analysis.  The original vers
 ````let k=(100*($i-1))+1````<br/> 
 ````let l=(100*($i-1))+10````<br/>
 ````sbatch --array=$k-$l RSimulationCode.sh````<br/> 
-````done<br/>
+````done````<br/>
 
 
 22. The computation time table results can be reproduced with the scripts contained within the ComputationTimeTable subdirectory.  Lastly, power table results are produced using the file “PowerTableCodeMar2020.R”.
