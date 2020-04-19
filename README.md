@@ -8,7 +8,7 @@ Commands 1-19 reproduce the permutation power analysis, while the instructions 2
 First, a few commands that may be useful for reproducing results on a slurm based cluster:
 
 Open an interactive session of R/bash:
-````module load r/3.6.0````
+````module load r/3.6.0````<br/>
 srun -p interact -N 1 -n 1 --mem=32g --time=8:00:00 --pty R --no-init-file<br/>
 
 srun -p interact -N 1 -n 1 --time=8:00:00 --mem=4g --pty bash<br/>
