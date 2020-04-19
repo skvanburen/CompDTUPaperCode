@@ -14,6 +14,7 @@ Open an interactive session of R/bash:<br/>
 ````srun -p interact -N 1 -n 1 --time=8:00:00 --mem=4g --pty bash````<br/>
 
 
+Now, the main instructions to reproduce the results from the paper:
 
 1. First, need to download the E-GEUV-1 data using the following lines, which end up running the R file DownloadGEUV1Data.R .  This array job has 924 parts because each job downloads one paired-end file and there are 462 samples (462*2=924)<br/>
 
