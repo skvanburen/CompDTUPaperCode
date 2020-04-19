@@ -9,24 +9,24 @@ First, a few commands that may be useful for reproducing results on a slurm base
 
 Open an interactive session of R/bash:<br/>
 ````module load r/3.6.0````<br/>
-srun -p interact -N 1 -n 1 --mem=32g --time=8:00:00 --pty R --no-init-file<br/>
+````srun -p interact -N 1 -n 1 --mem=32g --time=8:00:00 --pty R --no-init-file````<br/>
 
-srun -p interact -N 1 -n 1 --time=8:00:00 --mem=4g --pty bash<br/>
-
-
-
-1. First, need to download the E-GEUV-1 data using the following lines, which end up running the R file DownloadGEUV1Data.R .  This array job has 924 parts because each job downloads one paired-end file and there are 462 samples (462*2=924)
+````srun -p interact -N 1 -n 1 --time=8:00:00 --mem=4g --pty bash````<br/>
 
 
 
-module load r/3.6.0<br/>
-sbatch --array=1-924 DownloadGEUV1Data.sh<br/>
+1. First, need to download the E-GEUV-1 data using the following lines, which end up running the R file DownloadGEUV1Data.R .  This array job has 924 parts because each job downloads one paired-end file and there are 462 samples (462*2=924)<br/>
+
+
+
+````module load r/3.6.0````<br/>
+````sbatch --array=1-924 DownloadGEUV1Data.sh````<br/>
 
 
 
 2. Then, generate the Salmon index that will be used in step 3 to quantify the data. This index is generated from gencodeV27 (for the reference transcripts only).  The necessary GENCODE files can be downloaded from https://www.gencodegenes.org/human/release_27.html
 
-sbatch -N 1 -n 1 --mem=32g --time=2:00:00 -o /pine/scr/s/k/skvanbur/GEUV1/Salmon/indexlog.txt --wrap "~/bin/Salmon0.11.3/bin/salmon index -p 1 -t gencode.v27.transcripts.fa.gz -i /pine/scr/s/k/skvanbur/GEUV1/SalmonBootSamps/transcripts_index --gencode"
+````sbatch -N 1 -n 1 --mem=32g --time=2:00:00 -o /pine/scr/s/k/skvanbur/GEUV1/Salmon/indexlog.txt --wrap "~/bin/Salmon0.11.3/bin/salmon index -p 1 -t gencode.v27.transcripts.fa.gz -i /pine/scr/s/k/skvanbur/GEUV1/SalmonBootSamps/transcripts_index --gencode"````
 
 
 
@@ -35,15 +35,15 @@ sbatch -N 1 -n 1 --mem=32g --time=2:00:00 -o /pine/scr/s/k/skvanbur/GEUV1/Salmon
  
 
 
-module load r/3.6.0<br/>
-sbatch --array=1-462 RunSalmonGEUV1Data.sh<br/>
+````module load r/3.6.0````<br/>
+````sbatch --array=1-462 RunSalmonGEUV1Data.sh````<br/>
 
 
 
 4. Next, create the the tx2gene data frame in r that matches transcripts to genes.  This will be needed by various downstream code. This code will not take too long to run, so can be run interactively or like this:
 
-module load r/3.6.0<br/>
-sbatch -N 1 -n 1 --mem=8g --time=2:00:00 -o /pine/scr/s/k/skvanbur/GEUV1/MakeTx2Gene.out --wrap “Rscript MakeTx2Gene.R"<br/> 
+````module load r/3.6.0````<br/>
+````sbatch -N 1 -n 1 --mem=8g --time=2:00:00 -o /pine/scr/s/k/skvanbur/GEUV1/MakeTx2Gene.out --wrap “Rscript MakeTx2Gene.R"````<br/> 
 
 
 
