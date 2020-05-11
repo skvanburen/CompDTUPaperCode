@@ -1,6 +1,6 @@
 This repository contains code to reproduce results from "Differential Transcript Usage Analysis Incorporating Quantification Uncertainty via Compositional Measurement Error Regression Modeling."  See the file "Instructions to Reproduce Analyses.rtf" for more information.
 
-Last updated April 19, 2020
+Last updated May 11, 2020
 
 Commands 1-19 reproduce the permutation power analysis, while the instructions 20-22 will reproduce the Simulation based power analyses.  
 
