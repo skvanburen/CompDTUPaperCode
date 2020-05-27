@@ -1,4 +1,4 @@
-This repository contains code to reproduce results from "Differential Transcript Usage Analysis Incorporating Quantification Uncertainty via Compositional Measurement Error Regression Modeling."  See the file "Instructions to Reproduce Analyses.rtf" for more information.
+This repository contains code to reproduce results from "Differential Transcript Usage Analysis Incorporating Quantification Uncertainty via Compositional Measurement Error Regression Modeling."  The paper is currently available as a preprint at https://www.biorxiv.org/content/10.1101/2020.05.22.111450v1
 
 Last updated May 11, 2020
 
