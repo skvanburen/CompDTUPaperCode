@@ -1,6 +1,6 @@
 This repository contains code to reproduce results from "Differential Transcript Usage Analysis Incorporating Quantification Uncertainty via Compositional Measurement Error Regression Modeling."  The paper is currently available as a preprint at https://www.biorxiv.org/content/10.1101/2020.05.22.111450v1.  Additionally, the described methods in the preprint can be run using the CompDTUReg package available here https://github.com/skvanburen/CompDTUReg.
 
-Last updated May 27, 2020
+Last updated May 29, 2020
 
 Commands 1-19 reproduce the permutation power analysis, while the instructions 20-22 will reproduce the Simulation based power analyses.  
 
