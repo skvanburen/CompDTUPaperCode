@@ -1,10 +1,7 @@
 CompDTUMethodsPowerAnalysis <- function(genes, curr_cond, onCluster,
-                                      AllGroupCombinations, curr_change, CalculateCompDTUmeRes = FALSE, 
-                                      RSimFunctionsLoc, SimFileLoc = NULL, nsamp = 10, nboot = 500,
+                                      AllGroupCombinations, curr_change, CalculateCompDTUmeRes, nsamp, nboot,
                                       ngrpcombos = 252, BootSamps = TRUE, samps = NULL, GEUV1Data = FALSE,
                                       txsfiltered = NULL, 
-                                      calcCompDTUandCompDTUmeOnly = FALSE,
-                                      RunCompMIResults = FALSE,
                                       CalcCompDTUResForAbFromInfReps = FALSE,
                                       UpdatedAbDatasetsAbFromInfRepsDir = NULL,
                                       DatMeanBoot = NULL){
@@ -14,9 +11,6 @@ CompDTUMethodsPowerAnalysis <- function(genes, curr_cond, onCluster,
   print(paste0("Length of samps is ", length(samps)))
   print(paste0("First 12 samps are printed below"))
   print(head(samps, 12))
-  if(calcCompDTUandCompDTUmeOnly == FALSE){
-    CalculateCompDTUmeRes <- TRUE
-  }
   res <- vector(mode = "list", length = length(genes))
   if(is.null(samps)){
     samps <- paste0("Sample", 1:nsamp)
@@ -112,86 +106,6 @@ CompDTUMethodsPowerAnalysis <- function(genes, curr_cond, onCluster,
     }
     
     nc <- ncol(dObs)
-    #nsamp <- 10
-    #nboot <- 500
-    #ngrpcombos <- 252
-    if(RunCompMIResults==TRUE){
-      
-      CompMIPowerFn <- function(data, curr_cond, nboot, returnPvalsOnly = FALSE){
-        AllCoefs <- vector(mode = "list", length = nboot)
-        AllCoefsCov <- vector(mode = "list", length = nboot)
-        pvals_CompMI <- vector(mode = "numeric", length = nboot)
-        for(b in 1:nboot){
-          start <- nsamp*(b-1) +1
-          end <- nsamp*b
-          
-          curr_e5 <- data[start:end, , drop = FALSE]
-          
-          if((b==1 | b==51) & l==1){
-            print("The first 6 and last 6 rownames from the CompMI datset are given below")
-            print(head(rownames(curr_e5), 6))
-            print(tail(rownames(curr_e5), 6))
-          }
-          
-          if(nrow(curr_e5)!=nsamp){
-            stop("Number of rows for the CompMI analysis is incorrect")
-          }
-          
-          model_curr <- lm(curr_e5 ~ curr_cond)
-          anova_model_curr <- tryCatch(anova(model_curr), error = function(x){})
-          if(is.null(anova_model_curr)){
-            AllCoefs[[b]] <- NULL
-            AllCoefsCov[[b]] <- NULL
-            pvals_CompMI[b] <- NA
-          }else{
-            if(dim(curr_e5)[2]==1){
-              AllCoefs[[b]] <- as.matrix(coefficients(model_curr), ncol = 1)
-            }else{
-              AllCoefs[[b]] <- coefficients(model_curr)
-            }
-            
-            AllCoefsCov[[b]] <- vcov(model_curr)
-            pvals_CompMI[b] <- anova_model_curr["curr_cond", "Pr(>F)"]
-          }
-          
-          
-        }
-        if(length(AllCoefs)==nboot & length(AllCoefsCov)==nboot){
-          CombineCoefsRes <- CombineMICoefs(AllCoefs = AllCoefs, AllCoefsCov = AllCoefsCov, ninfreps = nboot, no_curr_gene_name = TRUE)
-          #The gene name that is output by the function will just be "1" so change it to the actual name
-          CombineCoefsRes$gene_id <- curr_gene
-          
-          pvals_CompMI2 <- data.frame(pvals_CompMI, curr_gene)
-          colnames(pvals_CompMI2) <- c("pval_pillai", "gene_id")
-          jj <- CombineMIPVals(AllPvals = pvals_CompMI2)
-          
-          res_CompMIMethods <- merge(CombineCoefsRes, jj, by = "gene_id")
-          if(returnPvalsOnly == TRUE){
-            ret_res <- data.frame("A" = NA, "B" = NA)
-            ret_res[1,1] <- res_CompMIMethods$pval_combineCoefs
-            ret_res[1,2] <- res_CompMIMethods$pvalt
-            colnames(ret_res) <- c(paste0("pval_combineCoefs"), paste0("pvalt"))
-            return(ret_res)
-          }else{
-            return(res_CompMIMethods)
-          }
-        }else{
-          if(returnPvalsOnly == TRUE){
-            ret_res <- data.frame("A" = NA, "B" = NA)
-            colnames(ret_res) <- c(paste0("pval_combineCoefs"), paste0("pvalt"))
-            return(ret_res)
-          }
-        }
-        
-      }
-      #rows_mixedsort <- mixedsort(rownames(dboot))
-      
-      CompMIRes <- CompMIPowerFn(dboot, curr_cond, nboot)
-      CompMIResF <- cbind(CompMIRes)
-      
-      res[[l]] <- CompMIResF
-      next
-    }
     
     CompDTUPowerFn <- function(data, curr_cond, returnTestStat = FALSE){
       res_Obs <- lm(data ~ curr_cond)
@@ -335,20 +249,11 @@ CompDTUMethodsPowerAnalysis <- function(genes, curr_cond, onCluster,
       pval_CompDTUmeNome <- CompDTUmeRes$pval_CompDTUmeNome
     
       
-      if(calcCompDTUandCompDTUmeOnly==TRUE){
-        res[[l]] <- list(pval_CompDTU = pval_CompDTU, 
+      res[[l]] <- list(pval_CompDTU = pval_CompDTU, 
                          pval_CompDTUme = pval_CompDTUme, 
                          pval_CompDTUmeNome = pval_CompDTUmeNome)
-        next
-      }
       
     }#end loop for CalculateCompDTUmeRes
-    
-    
-
-    if(is.null(test_stat_CompDTU)){
-      test_stat_CompDTU <- NA
-    }
     
 
   }# end l loop indexing over genes

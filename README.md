@@ -123,7 +123,7 @@ Now, the main instructions to reproduce the results from the paper:
 
 
 
-13. Now, run the power analyses for CompDTU and CompDTUme.  These results are executed and output by a file called “CompDTUMethodsPermutationPowerGEUV1Data.R”.  This code runs the CompDTU and CompDTUme methods in addition to the CompMI approaches as well.  Setting TwentySamplesTotalAnalysis at the top of the file to be TRUE will run the results for the 20 sample total analysis, and setting it to FALSE will run the results for the 100 total sample analysis.   Lastly, the multiple imputation based results in the supplement are run from this file by setting RunCompMIResults to be TRUE.  Setting this to TRUE will cause it to run the MI methods only and not run the CompDTU and CompDTUme results.  As a result, the MI values will run very quickly (usually less than 10-20 minutes for each array value). If you are only interested in the CompDTU and CompDTUme results you can and should set the option calcCompDTUandCompDTUmeOnly=TRUE in the function call.
+13. Now, run the power analyses for CompDTU and CompDTUme.  These results are executed and output by a file called “CompDTUMethodsPermutationPowerGEUV1Data.R”.  This code runs the CompDTU and CompDTUme methods as well as teh results for CompDTU run on the mean of the bootstrap samples.  If you are interested in these results, set CalcCompDTUResForAbFromInfReps to be TRUE.
 
 
 

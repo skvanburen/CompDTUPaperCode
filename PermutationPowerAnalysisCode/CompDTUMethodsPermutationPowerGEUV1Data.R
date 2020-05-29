@@ -9,12 +9,6 @@ onCluster <- TRUE
   #(Along with CompDTU on regular point estimates just for comparison)
 CalcCompDTUResForAbFromInfReps <- FALSE
 
-#Calculate only CompDTU, CompDTUme, and CompDTUmeNome results
-calcCompDTUandCompDTUmeOnly <- FALSE
-
-#Calculate CompMI Results only
-RunCompMIResults <- TRUE
-
 
 #Set to TRUE to run on the subset of 20 samples, FALSE to run on 100 sample analysis
 TwentySamplesTotalAnalysis <- TRUE
@@ -101,7 +95,6 @@ if(array_val <=10000){
 
 
 CalculateCompDTUmeRes <- TRUE
-calcPermDistResCompDTUme <- TRUE
   
   if(onCluster==TRUE){
     source("/nas/longleaf/home/skvanbur/code/CompFunctions.R")
@@ -199,20 +192,17 @@ if(is.null(genes)){
 }else if(length(genes)==0){
   curr_res <- NULL
 }else{
-  curr_res <- CompDTUMethodsPowerAnalysis(genes = genes, curr_cond = curr_cond, seedtoset = seedtoset, onCluster = onCluster, 
+  curr_res <- CompDTUMethodsPowerAnalysis(genes = genes, curr_cond = curr_cond, onCluster = onCluster, 
                                         AllGroupCombinations = AllGroupCombinations, curr_change = curr_change, CalculateCompDTUmeRes = CalculateCompDTUmeRes, nsamp = nsamp,
                                         nboot = nboot, ngrpcombos = ngrpcombos, samps = samps, BootSamps = BootSamps, GEUV1Data = TRUE,
-                                        txsfiltered = txsfiltered, calcCompDTUandCompDTUmeOnly = calcCompDTUandCompDTUmeOnly, RunCompMIResults = RunCompMIResults,
-                                        CalcCompDTUResForAbFromInfReps = CalcCompDTUResForAbFromInfReps, 
+                                        txsfiltered = txsfiltered, CalcCompDTUResForAbFromInfReps = CalcCompDTUResForAbFromInfReps, 
                                         UpdatedAbDatasetsAbFromInfRepsDir = UpdatedAbDatasetsAbFromInfRepsDir,DatMeanBoot = DatMeanBoot)
 }
 
 comptime <- proc.time() - st1
 print(comptime)
 
-if(RunCompMIResults==TRUE){
-  direc_modifier <- "CompMI"
-}else if(CalcCompDTUResForAbFromInfReps==TRUE){
+if(CalcCompDTUResForAbFromInfReps==TRUE){
   direc_modifier <- "CompDTUResForAbFromInfReps"
 }else{
   direc_modifier <- ""
@@ -220,7 +210,6 @@ if(RunCompMIResults==TRUE){
 
 if(onCluster==TRUE){
   assign(paste0("PermuteImputeRes", PartNum), curr_res)
-  #direc <- paste0("~/res/SQCCDataReproduceOldResBeforeCommonCode/ExamineConvertingBootstrapDataToRanksRes/")
     if(CalcCompDTUResForAbFromInfReps==TRUE){
       if(TwentySamplesTotalAnalysis==TRUE){
         direc <- paste0("/pine/scr/s/k/skvanbur/GEUV1/CompDTUMethodsPowerAnalysisResCompDTUResForAbFromInfRepsTwentySamples/","ActualData", direc_modifier, "/", "Change", curr_change, "/", "GroupCombo", groupcombo, "/")
@@ -262,8 +251,6 @@ if(onCluster==TRUE){
 if(!is.numeric(array_val)){
 
   # direc <- "/pine/scr/s/k/skvanbur/GEUV1/CompDTUMethodsPowerAnalysisRes/ActualData/"
-  #direc <- "/pine/scr/s/k/skvanbur/GEUV1/CompDTUMethodsPowerAnalysisResBootDRIMSeqFiltering/ActualDataCompMI/"
-  direc <- "/pine/scr/s/k/skvanbur/GEUV1/CompDTUMethodsPowerAnalysisResBootDRIMSeqFilteringTwentySamples/ActualDataCompMI/"
   #direc <- "/pine/scr/s/k/skvanbur/GEUV1/CompDTUMethodsPowerAnalysisResBootDRIMSeqFiltering/ActualData/"
   #direc <- "/pine/scr/s/k/skvanbur/GEUV1/CompDTUMethodsPowerAnalysisResBootDRIMSeqFilteringTwentySamples/ActualData/"
   # direc <- "/pine/scr/s/k/skvanbur/GEUV1/CompDTUMethodsPowerAnalysisResGibbsDRIMSeqFiltering/ActualData/"
