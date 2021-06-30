@@ -187,6 +187,41 @@ Now, instructions to reproduce the simulation power analysis.  The original vers
 ````done````<br/>
 
 
-22. The computation time table results can be reproduced with the scripts contained within the ComputationTimeTable subdirectory.  Lastly, power table results are produced using the file “PowerTableCodeMar2020.R”.
+22. The computation time table results can be reproduced with the scripts contained within the ComputationTimeTable subdirectory.  Power table results are produced using the file “PowerTableCodeMar2020.R”.
+
+23. The TCGA BRCA real data analysis results were produced using the following scripts, run in order.  Similarly to the code discussed above, most of the scripts call an R script with the corresponding name that performs the analysis.
+
+````cd ~/res/TCGABRCAAnalysis````<br/>
+````sbatch DownloadData.bash````<br/>
+
+````module load r/3.6.0````<br/>
+````cd ~/res/TCGABRCAAnalysis````<br/>
+````sbatch --array=1-1222 CreateFASTQandRunSalmon.sh````<br/>
+
+````module load r/3.6.0````<br/>
+````cd ~/res/TCGABRCAAnalysis````<br/>
+````sbatch TCGADataProcessing.bash````<br/>
+
+````module load r/3.6.0````<br/>
+````cd ~/res/TCGABRCAAnalysis````<br/>
+````sbatch --array=1-740 TCGASaveInfRepsAsRData.bash````<br/>
+
+````module load r/3.6.0````<br/>
+````cd ~/res/TCGABRCAAnalysis````<br/>
+````sbatch --array=1-100 TCGASaveNecessaryDatasetsForCompDTUReg.bash````<br/>
+
+````module load r/3.6.0````<br/>
+````cd ~/res/TCGABRCAAnalysis````<br/>
+````sbatch --array=1-2 TCGADRIMSeq.bash````<br/>
+
+````cd ~/res/TCGABRCAAnalysis````<br/>
+````module load gcc/9.1.0````<br/>
+````sbatch --array=1-2 TCGACompDTU.bash````<br/>
+
+````module load r/3.6.0````<br/>
+````cd ~/res/TCGABRCAAnalysis````<br/>
+````sbatch CalculateInfRVTCGA.sh````<br/>
+
+24. Lastly, analysis of the above TCGA BRCA results was performed using the script “AnalyzeTCGAResults.R”.
 
 
